@@ -23,6 +23,10 @@ class _TaskListScreenState extends State<TaskListScreen> {
     });
   }
 
+  void showSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,16 +57,18 @@ class _TaskListScreenState extends State<TaskListScreen> {
                   subtitle: Text(task.description),
                   trailing: Checkbox(
                     value: task.isCompleted,
-                    onChanged: (bool? value) {
+                    onChanged: (bool? value) async {
                       setState(() {
                         task.isCompleted = value!;
-                        TaskService().updateTask(task);
                       });
+                      await TaskService().updateTask(task);
+                      showSnackBar('Task updated successfully!');
                     },
                   ),
                   onLongPress: () async {
                     await TaskService().deleteTask(task.id);
-                    refreshTasks(); // Refresh the task list after deletion
+                    refreshTasks();
+                    showSnackBar('Task deleted successfully!');
                   },
                 );
               },
