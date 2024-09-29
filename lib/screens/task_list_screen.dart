@@ -27,6 +27,33 @@ class _TaskListScreenState extends State<TaskListScreen> {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
   }
 
+  Future<void> confirmDelete(Task task) async {
+    final shouldDelete = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Delete Task'),
+          content: Text('Are you sure you want to delete "${task.title}"?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false), // Cancel
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true), // Confirm
+              child: Text('Delete'),
+            ),
+          ],
+        );
+      },
+    );
+    if (shouldDelete == true) {
+      await TaskService().deleteTask(task.id);
+      refreshTasks();
+      showSnackBar('Task deleted successfully!');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,11 +92,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
                       showSnackBar('Task updated successfully!');
                     },
                   ),
-                  onLongPress: () async {
-                    await TaskService().deleteTask(task.id);
-                    refreshTasks();
-                    showSnackBar('Task deleted successfully!');
-                  },
+                  onLongPress: () => confirmDelete(task), // Call the confirmDelete method
                 );
               },
             );
