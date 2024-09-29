@@ -79,6 +79,16 @@ class _TaskListScreenState extends State<TaskListScreen> {
           return Center(child: CircularProgressIndicator());
         },
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AddTaskScreen(onTaskAdded: refreshTasks)),
+          );
+        },
+        child: Icon(Icons.add),
+        tooltip: 'Add Task',
+      ),
     );
   }
 }

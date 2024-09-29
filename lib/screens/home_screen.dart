@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'task_list_screen.dart';
+import 'add_task_screen.dart'; // Import the AddTaskScreen
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -7,14 +8,29 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text('Task Management')),
       body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => TaskListScreen()),
-            );
-          },
-          child: Text('View Tasks'),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => TaskListScreen()),
+                );
+              },
+              child: Text('View Tasks'),
+            ),
+            SizedBox(height: 20), // Add some spacing
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AddTaskScreen(onTaskAdded: () {})), // Placeholder for onTaskAdded
+                );
+              },
+              child: Text('Add Task'),
+            ),
+          ],
         ),
       ),
     );
