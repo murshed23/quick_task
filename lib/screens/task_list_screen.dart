@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../services/task_service.dart';
 import '../models/task.dart';
 import 'add_task_screen.dart';
+import 'edit_task_screen.dart'; // Import the EditTaskScreen
 
 class TaskListScreen extends StatefulWidget {
   @override
@@ -92,6 +93,17 @@ class _TaskListScreenState extends State<TaskListScreen> {
                       showSnackBar('Task updated successfully!');
                     },
                   ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => EditTaskScreen(
+                          task: task,
+                          onTaskUpdated: refreshTasks,
+                        ),
+                      ),
+                    );
+                  },
                   onLongPress: () => confirmDelete(task), // Call the confirmDelete method
                 );
               },
